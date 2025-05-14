@@ -3,19 +3,22 @@ import pytest
 from src.employees.employee import Employee
 
 
-def test_create_employee_successful(employee_data: dict, employee: Employee) -> None:
+def test_create_employee_successful(
+        parsed_data: tuple[dict[str, str], dict[str, str], dict[str, str]], employee: Employee
+) -> None:
     """Тест успешного создания сотрудника."""
-    assert employee.employee_id == employee_data["employee_id"]
+    employee_data = parsed_data[0]
+    assert employee.employee_id == int(employee_data["employee_id"])
     assert employee.email == employee_data["email"]
     assert employee.name == employee_data["name"]
     assert employee.department == employee_data["department"]
-    assert employee.hours_worked == employee_data["hours_worked"]
-    assert employee.rate == employee_data["rate"]
+    assert employee.hours_worked == float(employee_data["hours_worked"])
+    assert employee.rate == float(employee_data["rate"])
 
 
-def test_create_employee_failure(employee_data: dict) -> None:
+def test_create_employee_failure(parsed_data: tuple[dict[str, str], dict[str, str], dict[str, str]]) -> None:
     """Тест провального создания сотрудника."""
-    data_for_creating = employee_data.copy()
+    data_for_creating = parsed_data[0].copy()
     data_for_creating.pop("department")
     with pytest.raises(TypeError) as exc_info:
         Employee(**data_for_creating)

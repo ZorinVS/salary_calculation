@@ -6,7 +6,7 @@ from src.output.base import OutputFormatter
 class JSONOutput(OutputFormatter):
     """Сохраняет отчет в формате JSON."""
 
-    FILE_EXTENSION = "json"
+    FILE_EXTENSION: str = "json"
 
     def format(self, data: dict, filename: str) -> None:
         """Сохраняет данные в Json файл."""

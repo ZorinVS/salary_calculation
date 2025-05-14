@@ -1,26 +1,24 @@
+from pathlib import Path
+
 import pytest
 
 from src.employees.csv_parser import CSVParser
 from src.employees.employee import Employee
+from src.output.json_output import JSONOutput
+from src.reports import PayoutReport
 
 
-@pytest.fixture
-def employee_data() -> dict:
-    """Фикстура, содержащая данные для создания одного пользователя."""
-    return {
-        "employee_id": 1,
-        "email": "test1@test.test",
-        "name": "Test Test",
-        "department": "department1",
-        "hours_worked": 150,
-        "rate": 60,
-    }
-
-
-@pytest.fixture
-def employee(employee_data) -> Employee:
-    """Фикстура, содержащая экземпляр класса `Employee`."""
-    return Employee(**employee_data)
+# @pytest.fixture
+# def employee_data() -> dict:
+#     """Фикстура, содержащая данные для создания одного пользователя."""
+#     return {
+#         "employee_id": 1,
+#         "email": "test1@test.test",
+#         "name": "Test Test",
+#         "department": "department1",
+#         "hours_worked": 150,
+#         "rate": 60,
+#     }
 
 
 @pytest.fixture
@@ -58,8 +56,49 @@ def parsed_data() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
 
 
 @pytest.fixture
-def csv_file(csv_data, tmp_path) -> str:
+def employee(parsed_data: tuple[dict[str, str], dict[str, str], dict[str, str]]) -> Employee:
+    """Фикстура, содержащая экземпляр класса `Employee`."""
+    emp_data = parsed_data[0]
+    return Employee(**emp_data)
+
+
+@pytest.fixture
+def prepared_data() -> dict:
+    """Фикстура, содержащая подготовленные данные для отчета."""
+    return {
+        "Marketing":
+            {
+                "total_hours": 160.0,
+                "total_payout": 8000.0,
+                "employees": [
+                    {
+                        "name": "Alice Johnson",
+                        "hours": 160.0,
+                        "rate": 50.0,
+                        "payout": 8000.0
+                    }
+                ]
+             }
+    }
+
+
+@pytest.fixture
+def csv_file(csv_data:str, tmp_path: Path) -> str:
     """Фикстура, ссоздающая CSV-файл."""
     file_path = tmp_path / "test.csv"
     file_path.write_text(csv_data, encoding="utf-8")
     return str(file_path)
+
+
+@pytest.fixture
+def json_output(tmp_path: Path) -> JSONOutput:
+    """Фикстура, содержащая экземпляр класса `JSONOutput`."""
+    json_output = JSONOutput()
+    json_output.REPORTS_DIR = tmp_path
+    return json_output
+
+
+@pytest.fixture
+def payout_report(json_output: JSONOutput) -> PayoutReport:
+    """Фикстура, содержащая экземпляр класса `PayoutReport`."""
+    return PayoutReport(json_output)

@@ -9,6 +9,8 @@ from src.output.utils import REPORT_PRINTERS, create_filename
 class Report(ABC):
     """Базовый класс для генерации отчетов."""
 
+    REPORT_TYPE: str
+
     def __init__(self, formatter: OutputFormatter):
         self.formatter = formatter
 
@@ -17,11 +19,11 @@ class Report(ABC):
         """Абстрактный класс для подготовки данных."""
         pass
 
-    def generate(self, employees: Iterable[Employee], report_type: str, do_print: bool = False) -> None:
+    def generate(self, employees: Iterable[Employee], do_print: bool = False) -> None:
         """Метод генерации отчета."""
         report_data = self._prepare_data(employees)
-        filename = create_filename(report_type, file_extension=self.formatter.FILE_EXTENSION)
+        filename = create_filename(report_type=self.REPORT_TYPE, file_extension=self.formatter.FILE_EXTENSION)
         self.formatter.format(report_data, filename)
 
         if do_print:
-            REPORT_PRINTERS[report_type](report_data)
+            REPORT_PRINTERS[self.REPORT_TYPE](report_data)

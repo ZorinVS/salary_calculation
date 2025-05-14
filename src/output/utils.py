@@ -16,7 +16,7 @@ def validate_formatter_type(formatter_type: str) -> None:
 def create_filename(report_type: str, file_extension: str) -> str:
     """Генерация названия отчета по текущей дате."""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    return f'{report_type}_{timestamp}.{file_extension}'
+    return f"{report_type}_{timestamp}.{file_extension}"
 
 
 def print_payout_report(report_data: dict) -> None:

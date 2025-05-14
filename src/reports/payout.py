@@ -7,6 +7,8 @@ from src.reports.base import Report
 class PayoutReport(Report):
     """Класс для генерации отчета по заработной плате сотрудников, сгруппированный по отделам."""
 
+    REPORT_TYPE: str = "payout"
+
     def _prepare_data(self, employees: Iterable[Employee]) -> dict:
         """Подготовка данных для генерации отчета по ЗП"""
         departments = {}
