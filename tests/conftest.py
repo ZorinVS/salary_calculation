@@ -8,19 +8,6 @@ from src.output.json_output import JSONOutput
 from src.reports import PayoutReport
 
 
-# @pytest.fixture
-# def employee_data() -> dict:
-#     """Фикстура, содержащая данные для создания одного пользователя."""
-#     return {
-#         "employee_id": 1,
-#         "email": "test1@test.test",
-#         "name": "Test Test",
-#         "department": "department1",
-#         "hours_worked": 150,
-#         "rate": 60,
-#     }
-
-
 @pytest.fixture
 def csv_parser() -> CSVParser:
     """Фикстура, содержащая экземпляр класса `CSVParser`."""
@@ -83,7 +70,7 @@ def prepared_data() -> dict:
 
 
 @pytest.fixture
-def csv_file(csv_data:str, tmp_path: Path) -> str:
+def csv_file(csv_data: str, tmp_path: Path) -> str:
     """Фикстура, ссоздающая CSV-файл."""
     file_path = tmp_path / "test.csv"
     file_path.write_text(csv_data, encoding="utf-8")

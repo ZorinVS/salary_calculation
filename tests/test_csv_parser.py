@@ -29,4 +29,4 @@ def test_parse(
     """Тест парсинга CSV-файла."""
     result = list(csv_parser.parse(filename=csv_file))
     for res, expected in zip(result, parsed_data):
-        assert res, expected
+        assert res == expected
