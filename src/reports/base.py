@@ -11,12 +11,13 @@ class Report(ABC):
 
     REPORT_TYPE: str
 
-    def __init__(self, formatter: OutputFormatter):
+    def __init__(self, formatter: OutputFormatter) -> None:
+        """Конструктор класса `Report`."""
         self.formatter = formatter
 
     @abstractmethod
     def _prepare_data(self, employees: Iterable[Employee]) -> dict:
-        """Абстрактный класс для подготовки данных."""
+        """Абстрактный метод для подготовки данных."""
         pass
 
     def generate(self, employees: Iterable[Employee], do_print: bool = False) -> None:
